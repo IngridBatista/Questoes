@@ -1,4 +1,10 @@
 using MediatR;
+using Questao5.Domain.Entities;
+using Questao5.Domain.Interface;
+using Questao5.Domain.Service;
+using Questao5.Infrastructure.Database;
+using Questao5.Infrastructure.Database.CommandStore.Requests;
+using Questao5.Infrastructure.Database.QueryStore.Requests;
 using Questao5.Infrastructure.Sqlite;
 using System.Reflection;
 
@@ -8,6 +14,10 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 
 builder.Services.AddMediatR(Assembly.GetExecutingAssembly());
+builder.Services.AddSingleton<IRepository<Movimento>, MovimentoRepository>();
+builder.Services.AddSingleton<IRepository<Conta>, ContaRepository>();
+builder.Services.AddSingleton<IMovimentoService, MovimentoService>();
+builder.Services.AddSingleton<IContaService, ContaService>();
 
 // sqlite
 builder.Services.AddSingleton(new DatabaseConfig { Name = builder.Configuration.GetValue<string>("DatabaseName", "Data Source=database.sqlite") });
